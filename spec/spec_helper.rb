@@ -2,7 +2,7 @@ $testing = true
 SPEC = File.dirname(__FILE__)
 $:.unshift File.expand_path("#{SPEC}/../lib")
 
-require 'gem_template'
+require 'auto/require'
 require 'pp'
 
 Spec::Runner.configure do |config|
