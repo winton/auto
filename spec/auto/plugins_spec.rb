@@ -27,15 +27,15 @@ module Auto
     it "should provide a hash of plugin task information" do
       @tasks.should == [
         {
-          :path => "#{@fixtures}/auto-plugin-0.0.0/auto/plugin/task.rb",
+          :path => "#{@fixtures}/auto-plugin-0.0.0/.auto/plugin/task.rb",
           :name => "plugin:task"
         },
         {
-          :path => "#{@fixtures}/auto-plugin2/auto/plugin2/task.rb",
+          :path => "#{@fixtures}/auto-plugin2/.auto/plugin2/task.rb",
           :name => "plugin2:task"
         },
         {
-          :path => "#{@fixtures}/auto-plugin2/auto/plugin2/task2.rb",
+          :path => "#{@fixtures}/auto-plugin2/.auto/plugin2/task2.rb",
           :name => "plugin2:task2"
         }
       ]

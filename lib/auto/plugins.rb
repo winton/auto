@@ -16,7 +16,7 @@ module Auto
       
       # Add a directory to the plugin load paths.
       def add(path)
-        @@directories = [] if $TESTING
+        @@directories = [] if $testing
         @@directories << path
         @@directories.uniq!
         @@plugins = nil
@@ -95,8 +95,8 @@ module Auto
         end
         
         # ~/.auto/auto-plugin/auto/task.rb
-        @tasks = Dir["#{directory}/auto/**/*.rb"].sort.collect do |path|
-          relative = path.gsub("#{directory}/auto/", '')
+        @tasks = Dir["#{directory}/.auto/**/*.rb"].sort.collect do |path|
+          relative = path.gsub("#{directory}/.auto/", '')
           {
             :name => relative[0..-4].split('/').join(':').downcase,
             :path => path
