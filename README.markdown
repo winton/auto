@@ -82,7 +82,7 @@ Authoring Plugins
 Plugins have a lib directory just like any other gem. Here is how the lib file for the Foo plugin might look:
 
 <pre>
-# lib/foo.rb
+# lib/auto/foo.rb
 module Auto
   module Foo
 
@@ -102,7 +102,7 @@ module Auto
 end
 </pre>
 
-Auto uses the gem name (<code>auto-foo</code>) to find <code>lib/foo.rb</code> and include <code>Auto::Foo</code> into the environment. Now you can call the <code>foo</code> method in any of your Auto scripts.
+Auto uses the gem name (<code>auto-foo</code>) to find <code>lib/auto/foo.rb</code> and include <code>Auto::Foo</code> into the environment. Now you can call the <code>foo</code> method in any of your Auto scripts.
 
 Auto plugins must have gem names with <code>auto-</code> as a prefix to be automatically required.
 

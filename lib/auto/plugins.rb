@@ -84,7 +84,7 @@ module Auto
         @name = name[name.index('auto') + 1]
         
         # ~/.auto/auto-plugin/lib/plugin.rb
-        @library = "#{directory}/lib/#{@name}.rb"
+        @library = "#{directory}/lib/auto/#{@name}.rb"
         @library = nil unless File.exists?(@library)
         
         # Auto::Plugin

@@ -9,8 +9,8 @@ module Auto
     end
 
     it 'should require plugin library files' do
-      $".include?("#{@fixtures}/auto-plugin-0.0.0/lib/plugin.rb").should == true
-      $".include?("#{@fixtures}/auto-plugin2/lib/plugin2.rb").should == true
+      $".include?("#{@fixtures}/auto-plugin-0.0.0/lib/auto/plugin.rb").should == true
+      $".include?("#{@fixtures}/auto-plugin2/lib/auto/plugin2.rb").should == true
     end
 
     it 'should include all plugin library modules' do

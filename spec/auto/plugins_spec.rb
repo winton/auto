@@ -15,8 +15,8 @@ module Auto
     
     it "should provide an array of plugin library files" do
       @libraries.should == [
-        "#{@fixtures}/auto-plugin-0.0.0/lib/plugin.rb",
-        "#{@fixtures}/auto-plugin2/lib/plugin2.rb"
+        "#{@fixtures}/auto-plugin-0.0.0/lib/auto/plugin.rb",
+        "#{@fixtures}/auto-plugin2/lib/auto/plugin2.rb"
       ]
     end
     
