@@ -14,8 +14,13 @@ module Auto
     
     class <<self
       
-      # Add a directory to the plugin load paths.
+      # Add a plugin base directory
       def add(path)
+        Runner.require! Plugin.new(path)
+      end
+      
+      # Add a directory to the plugin load paths.
+      def add_directory(path)
         @@directories = [] if $testing
         @@directories << path
         @@directories.uniq!

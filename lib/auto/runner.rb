@@ -21,15 +21,20 @@ module Auto
     
     class <<self
 
-      def require!
+      def require!(plugin=nil)
+        require_all! and return unless plugin
+        if plugin.library
+          require plugin.library
+        end
+        begin
+          include eval(plugin.module)
+        rescue
+        end
+      end
+      
+      def require_all!
         Plugins.plugins.each do |plugin|
-          if plugin.library
-            require plugin.library
-          end
-          begin
-            include eval(plugin.module)
-          rescue
-          end
+          require! plugin
         end
       end
     end
