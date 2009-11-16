@@ -1,13 +1,7 @@
-require 'rubygems'
-
 module Auto
   class Plugins
     
-    @@directories = [
-      Gem.dir + "/gems",
-      "~/.auto",
-      "#{File.dirname(__FILE__)}/../../vendor/plugins"
-    ]
+    @@directories = [ "#{Gem.dir}/gems" ]
     @@plugins = nil
     
     cattr_accessor :directories
@@ -33,6 +27,8 @@ module Auto
         directories = @@directories.collect do |d|
           File.expand_path("#{d}/*auto-*/")
         end
+        # Treat the home directory like a plugin for the .auto directory
+        directories << File.expand_path('~') unless $testing
         @@plugins = Dir[*directories].collect do |d|
           Plugin.new(d)
         end
@@ -85,8 +81,11 @@ module Auto
         name = File.basename(directory)
         name = name.split('-')
         
-        return nil unless name.include?('auto')
-        @name = name[name.index('auto') + 1]
+        if name.include?('auto')
+          @name = name[name.index('auto') + 1]
+        else
+          @name = nil
+        end
         
         # ~/.auto/auto-plugin/lib/plugin.rb
         @library = "#{directory}/lib/auto/#{@name}.rb"
@@ -99,7 +98,7 @@ module Auto
           @module = nil
         end
         
-        # ~/.auto/auto-plugin/auto/task.rb
+        # ~/.auto/auto-plugin/.auto/task.rb
         @tasks = Dir["#{directory}/.auto/**/*.rb"].sort.collect do |path|
           relative = path.gsub("#{directory}/.auto/", '')
           {
