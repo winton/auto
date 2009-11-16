@@ -4,7 +4,7 @@ module Auto
   describe Auto::Plugins do
     
     before(:all) do
-      Plugins.add_directory @fixtures = "#{SPEC}/plugins"
+      Plugins.add_repository @fixtures = "#{SPEC}/plugins"
       @libraries = Plugins.libraries
       @modules = Plugins.modules
       @tasks = Plugins.tasks

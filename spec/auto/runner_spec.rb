@@ -4,7 +4,7 @@ module Auto
   describe Auto::Runner do
 
     before(:all) do
-      Plugins.add_directory @fixtures = "#{SPEC}/plugins"
+      Plugins.add_repository @fixtures = "#{SPEC}/plugins"
       @runner = Runner.new
     end
 

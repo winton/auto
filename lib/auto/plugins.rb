@@ -1,49 +1,52 @@
 module Auto
   class Plugins
     
-    @@directories = [ "#{Gem.dir}/gems" ]
+    @@plugin_paths = []
     @@plugins = nil
     
     cattr_accessor :directories
     
     class <<self
       
-      # Add a plugin base directory
+      # Add a plugin directory
       def add(path)
-        Runner.require! Plugin.new(path)
+        @@plugin_paths << path
+        @@plugins = nil
       end
       
-      # Add a directory to the plugin load paths.
-      def add_directory(path)
-        @@directories = [] if $testing
-        @@directories << path
-        @@directories.uniq!
-        @@plugins = nil
+      # Add a repository of plugins
+      def add_repository(path)
+        Dir["#{path}/auto-*"].each do |plugin|
+          Plugins.add plugin
+        end
       end
       
       # Returns an array of Plugin instances.
       def plugins
         return @@plugins if @@plugins
-        directories = @@directories.collect do |d|
-          File.expand_path("#{d}/*auto-*/")
+        unless $testing
+          specs = Gem.source_index.latest_specs.select do |spec|
+            spec.name =~ /^auto-.+/
+          end
+          @@plugin_paths += specs.collect &:full_gem_path
+          # Treat the home directory like a plugin for the .auto directory
+          @@plugin_paths << File.expand_path('~')
+          @@plugin_paths.compact!
         end
-        # Treat the home directory like a plugin for the .auto directory
-        directories << File.expand_path('~') unless $testing
-        @@plugins = Dir[*directories].collect do |d|
+        @@plugins = Dir[*@@plugin_paths].collect do |d|
           Plugin.new(d)
         end
-        @@plugins.compact!
-        @@plugins
+        @@plugins || []
       end
       
       # Returns an array of library file paths.
       def libraries
-        collector { |plugin| plugin.library }
+        collector &:library
       end
       
       # Returns an array of modules.
       def modules
-        collector { |plugin| plugin.module }
+        collector &:module
       end
       
       # Returns a sorted array of hashes that describe tasks.
@@ -52,9 +55,7 @@ module Auto
         if task
           tasks.select { |t| t[:name] == task.downcase }.first
         else
-          t = collector { |plugin| plugin.tasks }
-          t = t.flatten
-          t.sort do |a, b|
+          collector(&:tasks).flatten.sort do |a, b|
             a[:name].gsub(':', '0') <=> b[:name].gsub(':', '0')
           end
         end
