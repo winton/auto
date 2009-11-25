@@ -5,7 +5,7 @@ module Auto
 
     before(:all) do
       Plugins.add_repository @fixtures = "#{SPEC}/plugins"
-      @runner = Runner.new
+      @runner = Auto::Runner.new
     end
 
     it 'should require plugin library files' do
